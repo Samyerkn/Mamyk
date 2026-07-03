@@ -1,1 +1,1 @@
-# Mamyk
+# Mamyq
