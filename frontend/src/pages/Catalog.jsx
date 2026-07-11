@@ -1,58 +1,56 @@
-import{useState} from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import "../styles/Catalog.css";
 import Header from "../components/Header";
-const products = [
-    {
-    id: 1,
-    name: "Адаптивная футболка",
-    price: 18000,
-    fastening: "Магниты",
-    image: "https://picsum.photos/250/250?1",
-    },
-    {
-    id: 2,
-    name: "Футболка на липучках",
-    price: 17500,
-    fastening: "Липучки",
-    image: "https://picsum.photos/250/250?2",
-
-    },
-    {
-    id: 3,
-    name: "Футболка на пуговицах",
-    price: 16000,
-    fastening: "Пуговицы",
-    image: "https://picsum.photos/250/250?3",
-    },
-
-    
-
-];
-
+import axios from "axios";
 
 function Catalog() {
+    const [products, setProducts] = useState([]);
     const [filter, setFilter] = useState("Все");
-    const filteredProducts = filter === "Все" ? products : products.filter(product => product.fastening === filter);
+
+    const filterMap = {
+        Все: null,
+        Магниты: "magnets",
+        Липучки: "velcro",
+        Кнопки: "buttons",
+    };
+
+    const filteredProducts =
+        filter === "Все"
+            ? products
+            : products.filter((product) => product.fastening_type === filterMap[filter]);
+
+    useEffect(() => {
+        const endpoint = filterMap[filter] ? `/api/products/?fastening_type=${filterMap[filter]}` : "/api/products/";
+
+        axios
+            .get(`http://localhost:8000${endpoint}`)
+            .then((response) => {
+                setProducts(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+            });
+    }, [filter]);
+
     return (
         <>
-       
-        <Header />
-        <div className="catalog">
-            <h1>Каталог товаров</h1>
-            <div className="filters">
-                <button onClick={() => setFilter("Все")}>Все</button>
-                <button onClick={() => setFilter("Магниты")}>Магниты</button>
-                <button onClick={() => setFilter("Липучки")}>Липучки</button>
-                <button onClick={() => setFilter("Пуговицы")}>Пуговицы</button>
+            <Header />
+            <div className="catalog">
+                <h1>Каталог товаров</h1>
+                <div className="filters">
+                    <button onClick={() => setFilter("Все")}>Все</button>
+                    <button onClick={() => setFilter("Магниты")}>Магниты</button>
+                    <button onClick={() => setFilter("Липучки")}>Липучки</button>
+                    <button onClick={() => setFilter("Кнопки")}>Кнопки</button>
+                </div>
+                <div className="products">
+                    {filteredProducts.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
             </div>
-            <div className="products">
-                {filteredProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
-        </div>
-         </>
+        </>
     );
 }
 

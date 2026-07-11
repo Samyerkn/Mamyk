@@ -8,6 +8,7 @@ function Header() {
       <nav>
         <Link to="/catalog">Каталог</Link>
         <Link to="/checkout">Оформление</Link>
+        <Link to="/orders">Мои заказы</Link>
       </nav>
     </header>
   );

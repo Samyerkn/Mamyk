@@ -1,38 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../styles/Product.css";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
-const products = [
-    {
-    id: 1,
-    name: "Адаптивная футболка",
-    price: 18000,
-    fastening: "Магниты",
-    image: "https://picsum.photos/500/500?1",
-    description: "Удобная адаптивная футболка с магнитной застежкой.",
-  },
-  {
-    id: 2,
-    name: "Футболка на липучках",
-    price: 17500,
-    fastening: "Липучки",
-    image: "https://picsum.photos/500/500?2",
-    description: "Футболка с застежкой на липучках.",
-  },
-  {
-    id: 3,
-    name: "Футболка на пуговицах",
-    price: 16000,
-    fastening: "Пуговицы",
-    image: "https://picsum.photos/500/500?3",
-    description: "Классическая модель на пуговицах.",
-  },
-];
+import axios from "axios";
+import heroImage from "../assets/hero.png";
+
+
+
+function getImageUrl(image) {
+  if (!image) return heroImage;
+  if (image.startsWith("http")) return image;
+  if (image.startsWith("/products/")) return `http://localhost:8000${image}`;
+  return `http://localhost:8000/products/${encodeURIComponent(image)}`;
+}
 
 function Product() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const product = products.find((p) => p.id === parseInt(id));
+  const [product, setProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("M");
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/products/${id}/`)
+      .then((response) => {
+        setProduct(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching product:", error);
+      });
+  }, [id]);
 
   if (!product) {
     return <h1>Товар не найден</h1>;
@@ -46,20 +43,27 @@ function Product() {
     </button>
     <div className="product-page">
       <div className="product-image">
-        <img src={product.image} alt={product.name} />
+        <img src={getImageUrl(product.image)} alt={product.name} />
       </div>
       <div className="product-info">
         <h1>{product.name}</h1>
         <p className="description">{product.description}</p>
         <p className="price">Цена: {product.price} т.</p>
-        <h3>размер</h3>
+        <h3>Размеры</h3>
         <div className="sizes">
-          <button>S</button>
-          <button>M</button>
-          <button>L</button>
-          <button>XL</button>
+          {product.sizes?.map((size) => (
+            <button
+              key={size.id}
+              onClick={() => setSelectedSize(size.size)}
+              style={{ background: selectedSize === size.size ? "#333" : "#f2f2f2", color: selectedSize === size.size ? "#fff" : "#000" }}
+            >
+              {size.size}
+            </button>
+          ))}
         </div>
-        <button className="buy-btn">Добавить в корзину</button>
+        <Link to={`/checkout?product_id=${product.id}&size=${selectedSize}&product_name=${encodeURIComponent(product.name)}`}>
+          <button className="buy-btn">Купить</button>
+        </Link>
       </div>
     
     </div>
