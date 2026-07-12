@@ -19,10 +19,10 @@ function HelpRequestForm() {
   const navigate = useNavigate();
 
   const priceBySize = {
-    S: 12000,
-    M: 14000,
-    L: 16000,
-    XL: 18000,
+    S: 5000,
+    M: 5000,
+    L: 5000,
+    XL:5000,
   };
 
   const productPrice = parseFloat(searchParams.get("product_price")) || priceBySize[size] || 12000;
