@@ -1,0 +1,246 @@
+.requests-page {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px 40px;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.page-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.request-list {
+  display: grid;
+  gap: 18px;
+}
+
+.request-card,
+.request-detail-card,
+.request-form-card,
+.donation-history-card,
+.donation-form-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.request-card {
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-2px);
+  border-color: #a5b4fc;
+}
+
+.request-card-header,
+.request-detail-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: #1f2937;
+  background: #e5e7eb;
+}
+
+.status-pending { background: #fef3c7; }
+.status-in_progress { background: #bfdbfe; }
+.status-completed { background: #bbf7d0; }
+
+.request-story,
+.request-story-detail {
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.request-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: #4b5563;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.progress-bar-outer {
+  flex: 1;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  background: #6366f1;
+  border-radius: 999px;
+}
+
+.request-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: #374151;
+}
+
+.muted {
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary-button {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.secondary-button {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.request-form-card label,
+.donation-form-card label {
+  display: block;
+  margin-bottom: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.request-form-card input,
+.request-form-card textarea,
+.request-form-card select,
+.donation-form-card input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-error,
+.page-error,
+.notification.error {
+  color: #b91c1c;
+  margin-bottom: 14px;
+}
+
+.form-success,
+.notification.success,
+.donation-summary {
+  color: #166534;
+  margin-bottom: 14px;
+}
+
+.notification {
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.donation-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.donation-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.donation-row:last-child {
+  border-bottom: none;
+}
+
+.donation-history-title {
+  font-weight: 700;
+}
+
+.donation-history-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-size: 0.8rem;
+}
+
+.request-detail-page > .secondary-button {
+  margin-bottom: 18px;
+}
+
+.request-detail-card {
+  display: grid;
+  gap: 20px;
+}
+
+@media (max-width: 700px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .request-card-header,
+  .request-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-title-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

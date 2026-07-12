@@ -7,6 +7,9 @@ function Header() {
 
       <nav>
         <Link to="/catalog">Каталог</Link>
+        <Link to="/requests">Заявки</Link>
+        <Link to="/requests/me">Мои заявки</Link>
+        <Link to="/donations/history">История помощи</Link>
         <Link to="/checkout">Оформление</Link>
         <Link to="/orders">Мои заказы</Link>
       </nav>
