@@ -1,0 +1,257 @@
+.profile-page {
+  min-height: calc(100vh - 76px);
+  padding: 60px 24px;
+  background: #f8fafc;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.profile-heading {
+  margin-bottom: 35px;
+}
+
+.profile-label {
+  margin-bottom: 10px;
+  color: #6366f1;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.profile-heading h1 {
+  margin: 0 0 12px;
+  color: #111827;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.profile-heading p:not(.profile-label) {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* Информация пользователя */
+
+.profile-info-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px;
+  margin-bottom: 50px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.profile-avatar {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.profile-main-info {
+  flex: 1;
+}
+
+.profile-main-info h2 {
+  margin: 0 0 5px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.profile-main-info p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.profile-detail {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile-detail span {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.profile-detail strong {
+  color: #374151;
+  font-size: 14px;
+}
+
+/* Активность */
+
+.activity-heading {
+  margin-bottom: 22px;
+}
+
+.activity-heading h2 {
+  margin: 0 0 5px;
+  color: #111827;
+  font-size: 26px;
+}
+
+.activity-heading p {
+  margin: 0;
+  color: #6b7280;
+}
+
+/* Карточки */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.dashboard-card {
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: #eef2ff;
+  font-size: 22px;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 19px;
+}
+
+.dashboard-card p {
+  min-height: 48px;
+  margin: 0 0 22px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.dashboard-card a {
+  color: #6366f1;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.dashboard-card a:hover {
+  color: #4f46e5;
+}
+
+/* Кнопки */
+
+.profile-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 35px;
+}
+
+.profile-primary-button,
+.profile-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 22px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.profile-primary-button {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.profile-primary-button:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.profile-secondary-button {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.profile-secondary-button:hover {
+  border-color: #c7d2fe;
+  color: #6366f1;
+}
+
+/* Адаптация */
+
+@media (max-width: 850px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-info-card {
+    flex-wrap: wrap;
+  }
+
+  .profile-main-info {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 40px 16px;
+  }
+
+  .profile-heading h1 {
+    font-size: 30px;
+  }
+
+  .profile-info-card {
+    padding: 22px;
+  }
+
+  .profile-detail {
+    width: 100%;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-primary-button,
+  .profile-secondary-button {
+    width: 100%;
+  }
+}

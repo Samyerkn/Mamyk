@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 import { fetchMyDonations } from "../services/requests";
 import "../styles/Requests.css";
 
@@ -26,7 +25,6 @@ function SponsorHistory() {
 
   return (
     <>
-      <Header />
       <div className="requests-page">
         <h1>История помощи</h1>
         {loading && <p>Загрузка...</p>}

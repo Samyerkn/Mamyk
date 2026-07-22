@@ -1,51 +1,66 @@
-import axios from "axios";
-import { getAuthHeader, ensureAuthToken } from "./auth";
+import api from "./api";
 
-const API_BASE = "http://localhost:8000";
+// =====================================================
+// ЗАЯВКИ
+// =====================================================
 
-export async function fetchPublicHelpRequests() {
-  const response = await axios.get(`${API_BASE}/api/requests/`);
+// Получить все активные заявки
+export const getHelpRequests = async () => {
+  const response = await api.get("/requests/");
   return response.data;
-}
+};
 
-export async function fetchHelpRequest(id) {
-  const response = await axios.get(`${API_BASE}/api/requests/${id}/`);
-  return response.data;
-}
+// Старое название (для совместимости)
+export const fetchPublicHelpRequests = getHelpRequests;
 
-export async function fetchMyHelpRequests() {
-  await ensureAuthToken();
-  const response = await axios.get(`${API_BASE}/api/requests/me/`, {
-    headers: getAuthHeader(),
-  });
+// Получить одну заявку
+export const getHelpRequest = async (id) => {
+  const response = await api.get(`/requests/${id}/`);
   return response.data;
-}
+};
 
-export async function createHelpRequest(payload) {
-  await ensureAuthToken();
-  const response = await axios.post(`${API_BASE}/api/requests/`, payload, {
-    headers: getAuthHeader(),
-  });
-  return response.data;
-}
+// Старое название
+export const fetchHelpRequest = getHelpRequest;
 
-export async function createDonation(payload) {
-  await ensureAuthToken("sponsor");
-  const response = await axios.post(`${API_BASE}/api/donations/`, payload, {
-    headers: getAuthHeader(),
-  });
+// Получить мои заявки
+export const getMyHelpRequests = async () => {
+  const response = await api.get("/requests/me/");
   return response.data;
-}
+};
 
-export async function fetchMyDonations() {
-  await ensureAuthToken("sponsor");
-  const response = await axios.get(`${API_BASE}/api/donations/me/`, {
-    headers: getAuthHeader(),
-  });
-  return response.data;
-}
+// Старое название
+export const fetchMyHelpRequests = getMyHelpRequests;
 
-export async function fetchDonationsByRequest(id) {
-  const response = await axios.get(`${API_BASE}/api/donations/by_request/${id}/`);
+// Создать заявку
+export const createHelpRequest = async (requestData) => {
+  const response = await api.post("/requests/", requestData);
   return response.data;
-}
+};
+
+// =====================================================
+// ПОЖЕРТВОВАНИЯ
+// =====================================================
+
+// Создать пожертвование
+export const createDonation = async (donationData) => {
+  const response = await api.post("/donations/", donationData);
+  return response.data;
+};
+
+// История моих пожертвований
+export const getMyDonations = async () => {
+  const response = await api.get("/donations/me/");
+  return response.data;
+};
+
+// Старое название
+export const fetchMyDonations = getMyDonations;
+
+// Пожертвования по заявке
+export const getDonationsByRequest = async (id) => {
+  const response = await api.get(`/donations/by_request/${id}/`);
+  return response.data;
+};
+
+// Старое название
+export const fetchDonationsByRequest = getDonationsByRequest;

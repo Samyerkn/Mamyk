@@ -5,13 +5,34 @@
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #f8fafc;
   color: #1f2937;
   line-height: 1.6;
 }
 
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+
 /* Header Navigation */
+
 .header {
   background: white;
   border-bottom: 1px solid #e5e7eb;
@@ -25,45 +46,60 @@ body {
   z-index: 100;
 }
 
-.header h2 {
+.header-logo {
   font-size: 1.5rem;
   font-weight: 700;
   color: #6366f1;
 }
 
-.header nav {
+.header-nav {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.header nav a {
-  text-decoration: none;
+.header-nav a {
   color: #4b5563;
   font-weight: 500;
-  font-size: 0.95rem;
   padding: 8px 0;
-  transition: color 0.2s ease;
   border-bottom: 2px solid transparent;
+  transition: color 0.2s ease;
 }
 
-.header nav a:hover {
+.header-nav a:hover {
   color: #6366f1;
   border-bottom-color: #6366f1;
 }
 
-/* Responsive */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-user-name {
+  font-weight: 500;
+}
+
+.logout-button,
+.primary-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #6366f1;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
     gap: 16px;
   }
 
-  .header nav {
-    width: 100%;
+  .header-nav {
     justify-content: center;
+    flex-wrap: wrap;
     gap: 12px;
-    font-size: 0.9rem;
   }
 }

@@ -1,44 +1,66 @@
-import axios from "axios";
+import api from "./api";
 
-const TOKEN_KEY = "access_token";
-const PASSWORD = "mamyk123";
+// =====================================================
+// РЕГИСТРАЦИЯ
+// =====================================================
 
-export function getAuthHeader() {
-  const token = localStorage.getItem(TOKEN_KEY);
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
+export const registerUser = async (userData) => {
+  const response = await api.post("/auth/register/", userData);
 
-async function loginUser(email) {
-  const response = await axios.post("http://localhost:8000/api/auth/login/", {
-    email,
-    password: PASSWORD,
-  });
-  return response.data?.access;
-}
+  const { access, refresh } = response.data;
 
-export async function ensureAuthToken(role = "buyer") {
-  let token = localStorage.getItem(TOKEN_KEY);
-  if (token) return token;
+  if (access) {
+    localStorage.setItem("access_token", access);
+  }
 
-  const email = role === "sponsor" ? "sponsor@example.com" : "buyer@example.com";
-  const fullName = role === "sponsor" ? "Sponsor" : "Buyer";
+  if (refresh) {
+    localStorage.setItem("refresh_token", refresh);
+  }
+
+  return response.data;
+};
+
+// =====================================================
+// ВХОД
+// =====================================================
+
+export const loginUser = async (userData) => {
+  const response = await api.post("/auth/login/", userData);
+
+  const { access, refresh } = response.data;
+
+  localStorage.setItem("access_token", access);
+  localStorage.setItem("refresh_token", refresh);
+
+  return response.data;
+};
+
+// =====================================================
+// ТЕКУЩИЙ ПОЛЬЗОВАТЕЛЬ
+// =====================================================
+
+export const getCurrentUser = async () => {
+  const response = await api.get("/auth/me/");
+  return response.data;
+};
+
+// =====================================================
+// ВЫХОД
+// =====================================================
+
+export const logoutUser = async () => {
+  const refreshToken = localStorage.getItem("refresh_token");
 
   try {
-    const response = await axios.post("http://localhost:8000/api/auth/register/", {
-      email,
-      full_name: fullName,
-      password: PASSWORD,
-      role,
-    });
-    token = response.data?.access;
+    if (refreshToken) {
+      await api.post("/auth/logout/", {
+        refresh: refreshToken,
+      });
+    }
   } catch (error) {
-    token = await loginUser(email);
+    console.log("Logout API error:", error);
+  } finally {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   }
-
-  if (token) {
-    localStorage.setItem(TOKEN_KEY, token);
-    return token;
-  }
-
-  throw new Error("Не удалось получить токен авторизации");
-}
+};

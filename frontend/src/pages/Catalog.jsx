@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import "../styles/Catalog.css";
-import Header from "../components/Header";
 import axios from "axios";
 
 function Catalog() {
@@ -35,7 +34,7 @@ function Catalog() {
 
     return (
         <>
-            <Header />
+          
             <div className="catalog">
                 <h1>Каталог товаров</h1>
                 <div className="filters">

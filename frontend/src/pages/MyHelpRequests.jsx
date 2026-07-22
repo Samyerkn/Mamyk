@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import { fetchMyHelpRequests } from "../services/requests";
 import "../styles/Requests.css";
 
@@ -26,7 +25,6 @@ function MyHelpRequests() {
 
   return (
     <>
-      <Header />
       <div className="requests-page">
         <div className="page-title-row">
           <h1>Мои заявки</h1>

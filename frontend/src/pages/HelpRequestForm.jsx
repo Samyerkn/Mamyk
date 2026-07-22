@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "../components/Header";
 import { createHelpRequest } from "../services/requests";
 import "../styles/Requests.css";
 
@@ -88,7 +87,6 @@ function HelpRequestForm() {
 
   return (
     <>
-      <Header />
       <div className="requests-page request-form-page">
         <h1>Подача заявки на помощь</h1>
         <div className="request-form-card">

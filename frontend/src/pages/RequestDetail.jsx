@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
 import { fetchHelpRequest, fetchDonationsByRequest, createDonation } from "../services/requests";
 import "../styles/Requests.css";
-
+import Header from "../components/Header";
 function RequestDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -85,6 +84,7 @@ function RequestDetail() {
   };
 
   if (loading) {
+    
     return (
       <>
         <Header />
@@ -108,7 +108,7 @@ function RequestDetail() {
 
   return (
     <>
-      <Header />
+     
       <div className="requests-page request-detail-page">
         <button className="secondary-button" onClick={() => navigate(-1)}>Назад</button>
 
