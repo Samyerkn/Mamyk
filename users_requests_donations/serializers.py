@@ -3,13 +3,12 @@ from .models import User, HelpRequest, Donation, MedicalCase, MedicalDonation
 
 
 # ===== ПОЛЬЗОВАТЕЛЬ =====
-
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
 
     class Meta:
         model = User
-        fields = ['email', 'full_name', 'password', 'role']
+        fields = ['email', 'full_name', 'password']  # убрали role
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -17,10 +16,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
             full_name=validated_data.get('full_name', ''),
-            role=validated_data.get('role', User.BUYER),
+            role=User.BUYER,  # всегда покупатель по умолчанию
         )
         return user
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
