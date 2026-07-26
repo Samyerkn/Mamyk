@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import User, HelpRequest, Donation, MedicalCase, MedicalDonation
-
+from .models import User, HelpRequest, Donation, MedicalCase, MedicalDonation, News
 
 # ===== ПОЛЬЗОВАТЕЛЬ =====
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -74,4 +74,12 @@ class MedicalDonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalDonation
         fields = ['id', 'sponsor', 'medical_case', 'amount', 'created_at']
+        read_only_fields = ['created_at']
+        
+        
+        # ===== НОВОСТИ =====
+class NewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ['id', 'title', 'content', 'image', 'created_at']
         read_only_fields = ['created_at']

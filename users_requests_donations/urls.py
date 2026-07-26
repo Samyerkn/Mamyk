@@ -25,4 +25,8 @@ path('medical/', views.MedicalCaseListCreateView.as_view()),
 path('medical/<int:pk>/', views.MedicalCaseDetailView.as_view()),
 path('medical/donations/', views.MedicalDonationCreateView.as_view()),
 path('medical/donations/me/', views.MyMedicalDonationsView.as_view()),
+
+# Новости
+path('news/', views.NewsListView.as_view()),
+path('news/<int:pk>/', views.NewsDetailView.as_view()),
 ]

@@ -180,3 +180,25 @@ class MyMedicalDonationsView(APIView):
         donations = MedicalDonation.objects.filter(sponsor=request.user).order_by('-created_at')
         return Response(MedicalDonationSerializer(donations, many=True).data)
     
+    
+    # ===== НОВОСТИ =====
+from .models import MedicalCase, MedicalDonation, News
+from .serializers import MedicalCaseSerializer, MedicalDonationSerializer, NewsSerializer
+
+class NewsListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        news = News.objects.all().order_by('-created_at')
+        return Response(NewsSerializer(news, many=True).data)
+
+
+class NewsDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        try:
+            news = News.objects.get(pk=pk)
+        except News.DoesNotExist:
+            return Response({'error': 'Новость не найдена'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(NewsSerializer(news).data)
