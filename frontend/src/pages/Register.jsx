@@ -11,7 +11,6 @@ const Register = () => {
     full_name: "",
     email: "",
     password: "",
-    role: "buyer",
   });
 
   const [error, setError] = useState("");
@@ -128,27 +127,6 @@ const Register = () => {
               minLength={8}
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="role">
-              Кто вы?
-            </label>
-
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="buyer">
-                Покупатель
-              </option>
-
-              <option value="sponsor">
-                Спонсор
-              </option>
-            </select>
           </div>
 
           <button
