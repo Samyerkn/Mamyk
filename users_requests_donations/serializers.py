@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, HelpRequest, Donation
+from .models import User, HelpRequest, Donation, MedicalCase, MedicalDonation
 
 
 # ===== ПОЛЬЗОВАТЕЛЬ =====
@@ -52,4 +52,28 @@ class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
         fields = ['id', 'sponsor', 'help_request', 'amount', 'is_full_payment', 'created_at']
+        read_only_fields = ['created_at']
+        
+        
+        
+        # ===== МЕДИЦИНСКИЕ СЛУЧАИ =====
+class MedicalCaseSerializer(serializers.ModelSerializer):
+    amount_collected = serializers.ReadOnlyField()
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = MedicalCase
+        fields = [
+            'id', 'user', 'patient_name', 'diagnosis', 'story',
+            'amount_needed', 'amount_collected', 'status', 'created_at'
+        ]
+        read_only_fields = ['status', 'created_at']
+
+
+class MedicalDonationSerializer(serializers.ModelSerializer):
+    sponsor = UserSerializer(read_only=True)
+
+    class Meta:
+        model = MedicalDonation
+        fields = ['id', 'sponsor', 'medical_case', 'amount', 'created_at']
         read_only_fields = ['created_at']
