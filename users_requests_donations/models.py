@@ -131,3 +131,18 @@ class MedicalDonation(models.Model):
 
     def __str__(self):
         return f"{self.sponsor.email} → {self.medical_case.patient_name}: {self.amount} ₸"
+    
+    
+    # ===== НОВОСТИ =====
+class News(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='news/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'news'
+        verbose_name_plural = 'news'
+
+    def __str__(self):
+        return self.title
