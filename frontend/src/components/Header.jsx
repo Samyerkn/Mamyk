@@ -19,6 +19,8 @@ function Header() {
       <nav className="header-nav">
         <Link to="/catalog">Каталог</Link>
         <Link to="/requests">Помощь детям</Link>
+        <Link to="/medical">Медицинская помощь</Link>
+        <Link to="/news">Новости</Link>
         <Link to="/requests/me">Мои заявки</Link>
         <Link to="/donations/history">История помощи</Link>
         <Link to="/cart">

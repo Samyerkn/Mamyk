@@ -17,6 +17,8 @@ import HelpRequestForm from "./pages/HelpRequestForm";
 import RequestDetail from "./pages/RequestDetail";
 import MyHelpRequests from "./pages/MyHelpRequests";
 import SponsorHistory from "./pages/SponsorHistory";
+import MedicalCases from "./pages/MedicalCases";
+import NewsFeed from "./pages/NewsFeed";
 
 function App() {
   return (
@@ -86,6 +88,9 @@ function App() {
         />
 
         <Route path="/requests/:id" element={<RequestDetail />} />
+
+        <Route path="/medical" element={<MedicalCases />} />
+        <Route path="/news" element={<NewsFeed />} />
 
         <Route
           path="/donations/history"
