@@ -125,3 +125,58 @@ class DonationsByRequestView(APIView):
     def get(self, request, pk):
         donations = Donation.objects.filter(help_request_id=pk).order_by('-created_at')
         return Response(DonationSerializer(donations, many=True).data)
+    
+    # ===== МЕДИЦИНСКИЕ СЛУЧАИ =====
+from .models import MedicalCase, MedicalDonation
+from .serializers import MedicalCaseSerializer, MedicalDonationSerializer
+
+class MedicalCaseListCreateView(APIView):
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+    def get(self, request):
+        cases = MedicalCase.objects.filter(
+            status__in=['pending', 'in_progress']
+        ).order_by('-created_at')
+        return Response(MedicalCaseSerializer(cases, many=True).data)
+
+    def post(self, request):
+        serializer = MedicalCaseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MedicalCaseDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        try:
+            case = MedicalCase.objects.get(pk=pk)
+        except MedicalCase.DoesNotExist:
+            return Response({'error': 'Случай не найден'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(MedicalCaseSerializer(case).data)
+
+
+class MedicalDonationCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = MedicalDonationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(sponsor=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MyMedicalDonationsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        donations = MedicalDonation.objects.filter(sponsor=request.user).order_by('-created_at')
+        return Response(MedicalDonationSerializer(donations, many=True).data)
+    

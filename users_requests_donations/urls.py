@@ -18,4 +18,11 @@ urlpatterns = [
     path('donations/', views.DonationCreateView.as_view()),
     path('donations/me/', views.MyDonationsView.as_view()),
     path('donations/by_request/<int:pk>/', views.DonationsByRequestView.as_view()),
+    
+    
+# Медицинские случаи
+path('medical/', views.MedicalCaseListCreateView.as_view()),
+path('medical/<int:pk>/', views.MedicalCaseDetailView.as_view()),
+path('medical/donations/', views.MedicalDonationCreateView.as_view()),
+path('medical/donations/me/', views.MyMedicalDonationsView.as_view()),
 ]
