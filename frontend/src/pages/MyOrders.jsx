@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyOrders, payOrder } from "../services/orders";
+import "../styles/Requests.css";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -24,6 +25,7 @@ function MyOrders() {
 
   const handlePay = async (orderId) => {
     setPayingId(orderId);
+
     try {
       await payOrder(orderId);
       await loadOrders();
@@ -35,31 +37,137 @@ function MyOrders() {
   };
 
   return (
-    <div style={{ maxWidth: 900, margin: "40px auto", padding: 24 }}>
-      <h1>Мои заказы</h1>
+    <div className="requests-page">
 
-      {loading && <p>Загрузка...</p>}
-      {error && <p>{error}</p>}
+      <div className="requests-header">
 
-      {!loading && orders.length === 0 && <p>У вас пока нет заказов.</p>}
+        <span className="requests-tag">
+          MAMYK SHOP
+        </span>
 
-      <div style={{ display: "grid", gap: 12 }}>
-        {orders.map((order) => (
-          <div key={order.id} style={{ border: "1px solid #ddd", padding: 16, borderRadius: 8 }}>
-            <h3>Заказ #{order.id}</h3>
-            <p>Товар: {order.product?.name || "Товар"}</p>
-            <p>Размер: {order.size}</p>
-            <p>Адрес: {order.delivery_address}</p>
-            <p>Статус: {order.status}</p>
-            <p>Сумма: {order.total_price} т.</p>
-            {order.status !== "paid" && (
-              <button onClick={() => handlePay(order.id)} disabled={payingId === order.id}>
-                {payingId === order.id ? "Оплата..." : "Оплатить"}
-              </button>
-            )}
-          </div>
-        ))}
+        <h1>Мои заказы</h1>
+
+        <p>
+          Здесь отображаются все оформленные вами заказы.
+        </p>
+
       </div>
+
+      {loading && (
+        <div className="loading-text">
+          Загрузка...
+        </div>
+      )}
+
+      {error && (
+        <p className="page-error">
+          {error}
+        </p>
+      )}
+
+      {!loading && orders.length === 0 && (
+        <div className="empty-box">
+          📦 У вас пока нет заказов.
+        </div>
+      )}
+
+      <div className="request-list">
+
+        {orders.map((order) => {
+
+          const status =
+            order.status === "paid"
+              ? "Оплачен"
+              : order.status === "pending"
+              ? "Ожидает оплаты"
+              : order.status;
+
+          return (
+
+            <div
+              key={order.id}
+              className="request-card"
+            >
+
+              <span className="card-tag">
+                Заказ №{order.id}
+              </span>
+
+              <div className="request-card-header">
+
+                <div>
+
+                  <h2>
+                    {order.product?.name || "Товар"}
+                  </h2>
+
+                  <p className="diagnosis">
+                    Размер: {order.size}
+                  </p>
+
+                </div>
+
+                <span
+                  className={`status-pill status-${order.status}`}
+                >
+                  {status}
+                </span>
+
+              </div>
+
+              <div className="request-info">
+
+                <div className="info-item">
+
+                  <span className="info-title">
+                    Адрес
+                  </span>
+
+                  <strong>
+                    {order.delivery_address}
+                  </strong>
+
+                </div>
+
+                <div className="info-item">
+
+                  <span className="info-title">
+                    Стоимость
+                  </span>
+
+                  <strong>
+                    {Number(order.total_price).toLocaleString("ru-RU")} ₸
+                  </strong>
+
+                </div>
+
+              </div>
+
+              {order.status !== "paid" && (
+
+                <button
+                  className="primary-button"
+                  style={{
+                    width: "100%",
+                    marginTop: 18,
+                  }}
+                  onClick={() => handlePay(order.id)}
+                  disabled={payingId === order.id}
+                >
+                  {payingId === order.id
+                    ? "Оплата..."
+                    : "💳 Оплатить"}
+                </button>
+
+              )}
+
+            </div>
+
+          );
+        })}
+
+      </div>
+
     </div>
   );
 }

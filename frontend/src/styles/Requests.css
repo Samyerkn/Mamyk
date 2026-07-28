@@ -446,3 +446,97 @@
     }
 
 }
+/* ==========================
+   Оплата
+========================== */
+
+.payment-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.payment-modal{
+    width:430px;
+    background:#fff;
+    border-radius:24px;
+    padding:35px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    animation:fadeIn .25s;
+}
+
+.payment-modal h2{
+    text-align:center;
+    color:#4f46e5;
+    margin-bottom:10px;
+}
+
+.payment-modal p{
+    text-align:center;
+    color:#6b7280;
+    margin-bottom:25px;
+}
+
+.payment-modal input{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #ddd6fe;
+    border-radius:12px;
+    font-size:15px;
+}
+
+.payment-modal input:focus{
+    outline:none;
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 4px rgba(139,92,246,.15);
+}
+
+.payment-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+}
+
+.payment-buttons button{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.cancel-btn{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.cancel-btn:hover{
+    background:#d1d5db;
+}
+
+.pay-btn{
+    background:#4f46e5;
+    color:white;
+}
+
+.pay-btn:hover{
+    background:#4338ca;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
