@@ -1,24 +1,52 @@
 import "../styles/ProductCard.css";
 import { Link } from "react-router-dom";
-import heroImage from "../assets/hero.png";
-
-function getImageUrl(image) {
-    if (!image) return heroImage;
-    if (image.startsWith("http")) return image;
-    if (image.startsWith("/products/")) return `http://localhost:8000${image}`;
-    return `http://localhost:8000/products/${encodeURIComponent(image)}`;
-}
+import tshirtImage from "../assets/tshirt.png";
 
 function ProductCard({ product }) {
+
+    const category =
+        product.fastening_type === "buttons"
+            ? "Кнопки"
+            : product.fastening_type === "magnets"
+            ? "Магниты"
+            : "Липучки";
+
     return (
         <div className="product-card">
-            <img src={getImageUrl(product.image)} alt={product.name} />
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <h2>Цена: {product.price} т.</h2>
-            <Link to={`/product/${product.id}`}><button>Подробнее</button></Link>
-        </div>
-    )
-}
-export default ProductCard;
 
+            <div className="product-image">
+                <img src={tshirtImage} alt={product.name} />
+            </div>
+
+            <div className="product-content">
+
+                <span className="category">
+                    {category}
+                </span>
+
+                <h2 className="product-title">
+                    {product.name}
+                </h2>
+
+                <div className="price-box">
+
+
+                    <div className="price">
+                        {Number(product.price).toLocaleString("ru-RU")} ₸
+                    </div>
+
+                </div>
+
+                <Link to={`/product/${product.id}`}>
+                    <button className="details-btn">
+                        Подробнее →
+                    </button>
+                </Link>
+
+            </div>
+
+        </div>
+    );
+}
+
+export default ProductCard;

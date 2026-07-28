@@ -1,0 +1,253 @@
+.medical-page{
+    max-width:1200px;
+    margin:40px auto 70px;
+    padding:20px;
+}
+
+/* ---------- HEADER ---------- */
+
+.medical-header{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.medical-tag{
+    display:inline-block;
+    background:#f3e8ff;
+    color:#8b5cf6;
+    padding:8px 18px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.medical-header h1{
+    font-size:46px;
+    color:#2d3748;
+    margin-bottom:14px;
+    font-weight:800;
+}
+
+.medical-header p{
+    color:#6b7280;
+    font-size:18px;
+    line-height:1.7;
+    max-width:700px;
+    margin:auto;
+}
+
+.medical-header::after{
+    content:"";
+    display:block;
+    width:90px;
+    height:5px;
+    background:#8b5cf6;
+    border-radius:20px;
+    margin:25px auto 0;
+}
+
+/* ---------- FORM ---------- */
+
+.medical-form{
+    background:white;
+    border-radius:22px;
+    padding:35px;
+    box-shadow:0 8px 30px rgba(139,92,246,.12);
+    margin-bottom:50px;
+}
+
+.medical-form h2{
+    font-size:28px;
+    color:#2d3748;
+    margin-bottom:25px;
+}
+
+.medical-form input,
+.medical-form textarea{
+    width:100%;
+    padding:15px 18px;
+    margin-bottom:18px;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+    box-sizing:border-box;
+    font-family:inherit;
+}
+
+.medical-form textarea{
+    min-height:130px;
+    resize:vertical;
+}
+
+.medical-form input:focus,
+.medical-form textarea:focus{
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 4px rgba(139,92,246,.12);
+}
+
+.medical-form button{
+    border:none;
+    background:#8b5cf6;
+    color:white;
+    padding:16px;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.medical-form button:hover{
+    background:#7c3aed;
+    transform:translateY(-2px);
+}
+
+/* ---------- CARDS ---------- */
+
+.cases-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:30px;
+}
+
+.case-card{
+    background:white;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 8px 25px rgba(139,92,246,.12);
+    transition:.3s;
+}
+
+.case-card:hover{
+    transform:translateY(-6px);
+}
+
+.case-tag{
+    display:inline-block;
+    background:#f3e8ff;
+    color:#8b5cf6;
+    padding:6px 16px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.case-card h2{
+    font-size:28px;
+    color:#2d3748;
+    margin-bottom:8px;
+}
+
+.case-card h4{
+    color:#8b5cf6;
+    font-size:18px;
+    margin-bottom:15px;
+    font-weight:600;
+}
+
+.case-card p{
+    color:#6b7280;
+    line-height:1.8;
+    margin-bottom:24px;
+}
+
+/* ---------- MONEY ---------- */
+
+.money-box{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    background:#faf9ff;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:25px;
+}
+
+.money-box div{
+    display:flex;
+    flex-direction:column;
+}
+
+.money-box span{
+    color:#9ca3af;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.money-box strong{
+    color:#8b5cf6;
+    font-size:24px;
+    font-weight:700;
+}
+
+/* ---------- DONATION ---------- */
+
+.case-card input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    margin-bottom:18px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+    box-sizing:border-box;
+}
+
+.case-card input:focus{
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 4px rgba(139,92,246,.12);
+}
+
+.case-card button{
+    width:100%;
+    border:none;
+    border-radius:12px;
+    background:#8b5cf6;
+    color:white;
+    padding:15px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.case-card button:hover{
+    background:#7c3aed;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:768px){
+
+.medical-header h1{
+    font-size:34px;
+}
+
+.medical-header p{
+    font-size:16px;
+}
+
+.medical-form{
+    padding:24px;
+}
+
+.case-card{
+    padding:22px;
+}
+
+.money-box{
+    flex-direction:column;
+}
+
+.money-box strong{
+    font-size:22px;
+}
+
+}

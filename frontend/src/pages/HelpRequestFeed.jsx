@@ -7,6 +7,7 @@ function HelpRequestFeed() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,70 +16,223 @@ function HelpRequestFeed() {
         const data = await fetchPublicHelpRequests();
         setRequests(data);
       } catch (err) {
-        setError("Не удалось загрузить публичную ленту заявок.");
+        setError("Не удалось загрузить список заявок.");
       } finally {
         setLoading(false);
       }
     };
+
     loadRequests();
   }, []);
 
   return (
-    <>
-      
-      <div className="requests-page">
-        <div className="page-title-row">
-          <h1>Публичная лента заявок</h1>
-          <button className="primary-button" onClick={() => navigate("/requests/new")}>Подать заявку</button>
+    <div className="requests-page">
+
+      <div className="requests-header">
+
+        <span className="requests-tag">
+          MAMYK CARE
+        </span>
+
+        <h1>
+          Помощь детям
+        </h1>
+
+        <p>
+          Каждая заявка помогает ребёнку получить адаптивную одежду,
+          которая сделает повседневную жизнь комфортнее.
+        </p>
+
+        <button
+          className="primary-button"
+          onClick={() => navigate("/requests/new")}
+        >
+          Подать заявку
+        </button>
+
+      </div>
+
+      {loading && (
+        <p className="loading-text">
+          Загрузка...
+        </p>
+      )}
+
+      {error && (
+        <p className="page-error">
+          {error}
+        </p>
+      )}
+
+      {!loading && requests.length === 0 && (
+        <div className="empty-box">
+          Пока нет активных заявок.
         </div>
+      )}
 
-        {loading && <p>Загрузка...</p>}
-        {error && <p className="page-error">{error}</p>}
+      <div className="request-list">
 
-        {!loading && requests.length === 0 && (
-          <p>Сейчас нет активных заявок. Вы можете создать первую.</p>
-        )}
+        {requests.map((request) => {
 
-        <div className="request-list">
-          {requests.map((request) => {
-            const percent = request.amount_needed > 0
-              ? Math.min(100, (request.amount_collected / request.amount_needed) * 100)
+          const percent =
+            request.amount_needed > 0
+              ? Math.min(
+                  100,
+                  (request.amount_collected /
+                    request.amount_needed) *
+                    100
+                )
               : 0;
 
-            return (
-              <div key={request.id} className="request-card" onClick={() => navigate(`/requests/${request.id}`)}>
-                <div className="request-card-header">
-                  <div>
-                    <h3>{request.child_name}</h3>
-                    <p className="muted">{request.diagnosis}</p>
-                  </div>
-                  <span className={`status-pill status-${request.status}`}>{request.status.replace("_", " ")}</span>
+          const fasteningType =
+            request.fastening_type === "buttons"
+              ? "На кнопках"
+              : request.fastening_type === "magnets"
+              ? "На магнитах"
+              : request.fastening_type === "velcro"
+              ? "На липучках"
+              : request.fastening_type;
+
+          const status =
+            request.status === "pending"
+              ? "Ожидает"
+              : request.status === "in_progress"
+              ? "В процессе"
+              : request.status === "completed"
+              ? "Завершено"
+              : request.status;
+
+          return (
+
+            <div
+              key={request.id}
+              className="request-card"
+              onClick={() =>
+                navigate(`/requests/${request.id}`)
+              }
+            >
+
+              <span className="card-tag">
+                ❤️ Помощь ребёнку
+              </span>
+
+              <div className="request-card-header">
+
+                <div>
+
+                  <h2>
+                    {request.child_name}
+                  </h2>
+
+                  <p className="diagnosis">
+                    {request.diagnosis}
+                  </p>
+
                 </div>
 
-                <p className="request-story">{request.story}</p>
+                <span
+                  className={`status-pill status-${request.status}`}
+                >
+                  {status}
+                </span>
 
-                <div className="request-tags">
-                  <span>Тип: {request.fastening_type}</span>
-                  <span>Размер: {request.size}</span>
-                </div>
-
-                <div className="progress-row">
-                  <div className="progress-bar-outer">
-                    <div className="progress-bar-inner" style={{ width: `${percent}%` }} />
-                  </div>
-                  <span>{Math.round(percent)}%</span>
-                </div>
-
-                <div className="request-footer">
-                  <span>Собрано: {request.amount_collected} ₸</span>
-                  <span>Нужно: {request.amount_needed} ₸</span>
-                </div>
               </div>
-            );
-          })}
-        </div>
+
+              <p className="request-story">
+
+                {request.story.length > 170
+                  ? request.story.slice(0, 170) + "..."
+                  : request.story}
+
+              </p>
+
+              <div className="request-info">
+
+                <div className="info-item">
+
+                  <span className="info-title">
+                    Тип одежды
+                  </span>
+
+                  <strong>
+                    👕 {fasteningType}
+                  </strong>
+
+                </div>
+
+                <div className="info-item">
+
+                  <span className="info-title">
+                    Размер
+                  </span>
+
+                  <strong>
+                    📏 {request.size}
+                  </strong>
+
+                </div>
+
+              </div>
+
+              <div className="progress-row">
+
+                <div className="progress-bar-outer">
+
+                  <div
+                    className="progress-bar-inner"
+                    style={{
+                      width: `${percent}%`,
+                    }}
+                  />
+
+                </div>
+
+                <span>
+                  {Math.round(percent)}%
+                </span>
+
+              </div>
+
+              <div className="requests-money-box">
+
+                <div>
+
+                  <span>
+                    Собрано
+                  </span>
+
+                  <strong>
+                    {Number(
+                      request.amount_collected
+                    ).toLocaleString("ru-RU")} ₸
+                  </strong>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    Необходимо
+                  </span>
+
+                  <strong>
+                    {Number(
+                      request.amount_needed
+                    ).toLocaleString("ru-RU")} ₸
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          );
+        })}
+
       </div>
-    </>
+
+    </div>
   );
 }
 

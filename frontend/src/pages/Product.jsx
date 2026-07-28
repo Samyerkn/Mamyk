@@ -2,17 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/Product.css";
 import axios from "axios";
-import heroImage from "../assets/hero.png";
+import tshirtImage from "../assets/tshirt.png";
 import { addToCart } from "../services/cart";
 
-function getImageUrl(image) {
-  if (!image) return heroImage;
-  if (image.startsWith("http")) return image;
-  if (image.startsWith("/products/")) {
-    return `http://localhost:8000${image}`;
-  }
-  return `http://localhost:8000/products/${encodeURIComponent(image)}`;
-}
+
 
 function Product() {
   const navigate = useNavigate();
@@ -42,7 +35,7 @@ function Product() {
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: tshirtImage,
       size: selectedSize,
     });
 
@@ -86,53 +79,56 @@ function Product() {
 
       <div className="product-page">
         <div className="product-image">
-          <img
-            src={getImageUrl(product.image)}
+         <img
+            src={tshirtImage}
             alt={product.name}
-          />
+         />
         </div>
 
         <div className="product-info">
-          <h1>{product.name}</h1>
 
-          <p className="description">
-            {product.description}
-          </p>
+  <span className="product-badge">
+    Адаптивная одежда
+  </span>
 
-          <p className="price">
-            Цена: {product.price} ₸
-          </p>
+  <h1>{product.name}</h1>
 
-          <h3>Размер</h3>
+  <p className="product-subtitle">
+    Комфортная одежда для ежедневного использования.
+  </p>
 
-          <div className="sizes">
-            {product.sizes?.map((size) => (
-              <button
-                key={size.id}
-                onClick={() => setSelectedSize(size.size)}
-                style={{
-                  background:
-                    selectedSize === size.size
-                      ? "#333"
-                      : "#f2f2f2",
-                  color:
-                    selectedSize === size.size
-                      ? "#fff"
-                      : "#000",
-                }}
-              >
-                {size.size}
-              </button>
-            ))}
-          </div>
+  <div className="price-box">
+    <span>Цена</span>
 
-          <button
-            className="buy-btn"
-            onClick={handleAddToCart}
-          >
-            🛒 Добавить в корзину
-          </button>
-        </div>
+    <div className="price">
+      {Number(product.price).toLocaleString("ru-RU")} ₸
+    </div>
+  </div>
+
+  <div className="size-section">
+    <h3>Выберите размер</h3>
+
+    <div className="sizes">
+      {product.sizes?.map((size) => (
+        <button
+          key={size.id}
+          className={selectedSize === size.size ? "active-size" : ""}
+          onClick={() => setSelectedSize(size.size)}
+        >
+          {size.size}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <button
+    className="buy-btn"
+    onClick={handleAddToCart}
+  >
+    Добавить в корзину
+  </button>
+
+</div>
       </div>
     </>
   );

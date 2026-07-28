@@ -14,13 +14,10 @@ function Catalog() {
         Кнопки: "buttons",
     };
 
-    const filteredProducts =
-        filter === "Все"
-            ? products
-            : products.filter((product) => product.fastening_type === filterMap[filter]);
-
     useEffect(() => {
-        const endpoint = filterMap[filter] ? `/api/products/?fastening_type=${filterMap[filter]}` : "/api/products/";
+        const endpoint = filterMap[filter]
+            ? `/api/products/?fastening_type=${filterMap[filter]}`
+            : "/api/products/";
 
         axios
             .get(`http://localhost:8000${endpoint}`)
@@ -28,28 +25,57 @@ function Catalog() {
                 setProducts(response.data);
             })
             .catch((error) => {
-                console.error("Error fetching products:", error);
+                console.error("Ошибка загрузки товаров:", error);
             });
     }, [filter]);
 
     return (
-        <>
-          
-            <div className="catalog">
-                <h1>Каталог товаров</h1>
-                <div className="filters">
-                    <button onClick={() => setFilter("Все")}>Все</button>
-                    <button onClick={() => setFilter("Магниты")}>Магниты</button>
-                    <button onClick={() => setFilter("Липучки")}>Липучки</button>
-                    <button onClick={() => setFilter("Кнопки")}>Кнопки</button>
-                </div>
-                <div className="products">
-                    {filteredProducts.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+        <section className="catalog">
+
+           <div className="catalog-header">
+           <span className="catalog-tag">
+                  MAMYK 
+           </span>
+
+         <h1>
+           Каталог товаров
+         </h1>
+
+        <p>
+           Адаптивная одежда, созданная для комфорта детей
+           и удобства родителей.
+        </p>
+     </div>
+
+            <div className="filters">
+                {Object.keys(filterMap).map((item) => (
+                    <button
+                        key={item}
+                        className={filter === item ? "active" : ""}
+                        onClick={() => setFilter(item)}
+                    >
+                        {item}
+                    </button>
+                ))}
             </div>
-        </>
+
+            <div className="products">
+                {products.length === 0 ? (
+                    <div className="empty-catalog">
+                        <h2>Товары не найдены</h2>
+                        <p>Попробуйте выбрать другую категорию.</p>
+                    </div>
+                ) : (
+                    products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                        />
+                    ))
+                )}
+            </div>
+
+        </section>
     );
 }
 
