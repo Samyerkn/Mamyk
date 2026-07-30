@@ -25,6 +25,7 @@ function MyOrders() {
 
   const handlePay = async (orderId) => {
     setPayingId(orderId);
+    setError("");
 
     try {
       await payOrder(orderId);
@@ -36,11 +37,22 @@ function MyOrders() {
     }
   };
 
+  const getStatus = (status) => {
+    if (status === "paid") {
+      return "Оплачен";
+    }
+
+    if (status === "pending") {
+      return "Ожидает оплаты";
+    }
+
+    return status;
+  };
+
   return (
-    <div className="requests-page">
+    <main className="requests-page orders-page">
 
       <div className="requests-header">
-
         <span className="requests-tag">
           MAMYK SHOP
         </span>
@@ -48,9 +60,9 @@ function MyOrders() {
         <h1>Мои заказы</h1>
 
         <p>
-          Здесь отображаются все оформленные вами заказы.
+          Здесь отображаются оформленные вами заказы
+          и информация об их статусе.
         </p>
-
       </div>
 
       {loading && (
@@ -60,115 +72,137 @@ function MyOrders() {
       )}
 
       {error && (
-        <p className="page-error">
+        <div className="notification error">
           {error}
-        </p>
-      )}
-
-      {!loading && orders.length === 0 && (
-        <div className="empty-box">
-          📦 У вас пока нет заказов.
         </div>
       )}
 
-      <div className="request-list">
+      {!loading && orders.length === 0 && (
+        <div className="orders-empty">
+          <h2>Заказов пока нет</h2>
 
-        {orders.map((order) => {
+          <p>
+            После оформления товара информация о заказе
+            появится на этой странице.
+          </p>
+        </div>
+      )}
 
-          const status =
-            order.status === "paid"
-              ? "Оплачен"
-              : order.status === "pending"
-              ? "Ожидает оплаты"
-              : order.status;
+      <div className="orders-list">
 
-          return (
+        {orders.map((order) => (
+          <article
+            key={order.id}
+            className="order-card"
+          >
 
-            <div
-              key={order.id}
-              className="request-card"
-            >
+            <div className="order-top">
 
-              <span className="card-tag">
+              <span className="order-number">
                 Заказ №{order.id}
               </span>
 
-              <div className="request-card-header">
+              <span
+                className={`order-status order-status-${order.status}`}
+              >
+                {getStatus(order.status)}
+              </span>
 
-                <div>
+            </div>
 
-                  <h2>
-                    {order.product?.name || "Товар"}
-                  </h2>
+            <div className="order-product">
 
-                  <p className="diagnosis">
-                    Размер: {order.size}
-                  </p>
+              <h2>
+                {order.product?.name || "Товар"}
+              </h2>
 
-                </div>
+              <span className="order-size">
+                Размер: <strong>{order.size}</strong>
+              </span>
 
-                <span
-                  className={`status-pill status-${order.status}`}
-                >
-                  {status}
+            </div>
+
+            <div className="order-details">
+
+              <div className="order-detail-card">
+
+                <span className="order-detail-label">
+                  Адрес доставки
                 </span>
 
-              </div>
-
-              <div className="request-info">
-
-                <div className="info-item">
-
-                  <span className="info-title">
-                    Адрес
-                  </span>
-
-                  <strong>
-                    {order.delivery_address}
-                  </strong>
-
-                </div>
-
-                <div className="info-item">
-
-                  <span className="info-title">
-                    Стоимость
-                  </span>
-
-                  <strong>
-                    {Number(order.total_price).toLocaleString("ru-RU")} ₸
-                  </strong>
-
-                </div>
+                <strong>
+                  {order.delivery_address}
+                </strong>
 
               </div>
 
-              {order.status !== "paid" && (
+              <div className="order-detail-card">
+
+                <span className="order-detail-label">
+                  Стоимость
+                </span>
+
+                <strong className="order-price">
+                  {Number(order.total_price).toLocaleString("ru-RU")} ₸
+                </strong>
+
+              </div>
+
+            </div>
+
+            {order.status !== "paid" ? (
+
+              <div className="order-payment">
+
+                <div>
+                  <span className="order-payment-label">
+                    Статус оплаты
+                  </span>
+
+                  <p>
+                    Заказ ожидает оплаты.
+                  </p>
+                </div>
 
                 <button
-                  className="primary-button"
-                  style={{
-                    width: "100%",
-                    marginTop: 18,
-                  }}
+                  className="primary-button order-pay-button"
+                  type="button"
                   onClick={() => handlePay(order.id)}
                   disabled={payingId === order.id}
                 >
                   {payingId === order.id
-                    ? "Оплата..."
-                    : "💳 Оплатить"}
+                    ? "Обработка..."
+                    : "Оплатить заказ"}
                 </button>
 
-              )}
+              </div>
 
-            </div>
+            ) : (
 
-          );
-        })}
+              <div className="order-paid-message">
+
+                <span className="order-paid-check">
+                  ✓
+                </span>
+
+                <div>
+                  <strong>Заказ оплачен</strong>
+
+                  <p>
+                    Оплата успешно зарегистрирована.
+                  </p>
+                </div>
+
+              </div>
+
+            )}
+
+          </article>
+        ))}
 
       </div>
 
-    </div>
+    </main>
   );
 }
 

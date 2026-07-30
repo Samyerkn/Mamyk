@@ -21,17 +21,22 @@ function Header() {
         <Link to="/requests">Помощь детям</Link>
         <Link to="/medical">Медицинская помощь</Link>
         <Link to="/news">Новости</Link>
-        <Link to="/requests/me">Мои заявки</Link>
-        <Link to="/donations/history">История помощи</Link>
-        <Link to="/cart">
-    🛒 Корзина
-</Link>
-        <Link to="/orders">Мои заказы</Link>
+
+        {user && (
+          <>
+            <Link to="/requests/me">Мои заявки</Link>
+            <Link to="/donations/history">История помощи</Link>
+            <Link to="/orders">Мои заказы</Link>
+          </>
+        )}
       </nav>
 
       <div className="header-user">
         {user ? (
           <>
+          <Link to="/cart" className="header-cart">
+  Корзина
+</Link>
             <Link to="/profile" className="header-user-name">
               {user.full_name || "Профиль"}
             </Link>

@@ -251,3 +251,30 @@
 }
 
 }
+.medical-create-section {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+  
+  .medical-add-btn {
+    padding: 13px 24px;
+    border: none;
+    border-radius: 10px;
+    background: #6366f1;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  
+  .medical-add-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+  
+  .medical-create-section .medical-form {
+    margin-top: 24px;
+    text-align: left;
+  }

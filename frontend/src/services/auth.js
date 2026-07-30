@@ -26,14 +26,16 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   const response = await api.post("/auth/login/", userData);
-
+  
   const { access, refresh } = response.data;
-
+  
   localStorage.setItem("access_token", access);
   localStorage.setItem("refresh_token", refresh);
+  localStorage.removeItem("cart");  // ← добавь эту строку
+  localStorage.removeItem("mamyk_cart");  // ← добавь эту строку
 
   return response.data;
-};
+  };
 
 // =====================================================
 // ТЕКУЩИЙ ПОЛЬЗОВАТЕЛЬ
@@ -62,5 +64,6 @@ export const logoutUser = async () => {
   } finally {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-  }
+    localStorage.removeItem("mamyk_cart");   // ← добавь эту строку
+      }
 };

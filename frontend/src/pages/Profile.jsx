@@ -88,6 +88,83 @@ const Profile = () => {
           </div>
         </div>
       </section>
+      <section className="profile-info-card">
+  <div className="profile-section-header">
+    <div>
+      <h2>Платёжная карта</h2>
+      <p>Карта для оплаты заказов и донатов</p>
+    </div>
+  </div>
+
+  {localStorage.getItem("card_number") ? (
+    <div className="profile-info-grid">
+      <div className="profile-info-item">
+        <span className="profile-info-label">Номер карты</span>
+        <strong>**** **** **** {localStorage.getItem("card_number").slice(-4)}</strong>
+      </div>
+      <div className="profile-info-item">
+        <span className="profile-info-label">Срок действия</span>
+        <strong>{localStorage.getItem("card_date")}</strong>
+      </div>
+      <button 
+        className="primary-button"
+        style={{marginTop: "12px", background: "#e74c3c"}}
+        onClick={() => {
+          localStorage.removeItem("card_number");
+          localStorage.removeItem("card_date");
+          localStorage.removeItem("card_cvv");
+          window.location.reload();
+        }}
+      >
+        Удалить карту
+      </button>
+    </div>
+  ) : (
+    <div>
+      <p style={{color: "#888", marginBottom: "12px"}}>Карта не добавлена</p>
+      <div style={{display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px"}}>
+        <input
+          type="text"
+          placeholder="Номер карты (16 цифр)"
+          maxLength={16}
+          id="card_number_input"
+          style={{padding: "10px", borderRadius: "8px", border: "1px solid #ddd"}}
+        />
+        <input
+          type="text"
+          placeholder="Срок действия (MM/YY)"
+          id="card_date_input"
+          style={{padding: "10px", borderRadius: "8px", border: "1px solid #ddd"}}
+        />
+        <input
+          type="password"
+          placeholder="CVV"
+          maxLength={3}
+          id="card_cvv_input"
+          style={{padding: "10px", borderRadius: "8px", border: "1px solid #ddd"}}
+        />
+        <button
+          className="primary-button"
+          onClick={() => {
+            const number = document.getElementById("card_number_input").value;
+            const date = document.getElementById("card_date_input").value;
+            const cvv = document.getElementById("card_cvv_input").value;
+            if (number.length === 16 && date && cvv.length === 3) {
+              localStorage.setItem("card_number", number);
+              localStorage.setItem("card_date", date);
+              localStorage.setItem("card_cvv", cvv);
+              window.location.reload();
+            } else {
+              alert("Заполните все поля правильно!");
+            }
+          }}
+        >
+          Добавить карту
+        </button>
+      </div>
+    </div>
+  )}
+</section>
     </main>
   );
 };

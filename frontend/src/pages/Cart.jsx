@@ -18,12 +18,6 @@ function Cart() {
   const [orderId, setOrderId] = useState(null);
   const [error, setError] = useState("");
 
-  const [showPayment, setShowPayment] = useState(false);
-
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardDate, setCardDate] = useState("");
-  const [cardCVV, setCardCVV] = useState("");
-
   useEffect(() => {
     setCart(getCart());
   }, []);
@@ -38,7 +32,7 @@ function Cart() {
     setCart(getCart());
   };
 
-  const handleCheckout = (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
 
     if (cart.length === 0) {
@@ -51,29 +45,21 @@ function Cart() {
       return;
     }
 
-    setError("");
-    setShowPayment(true);
-  };
-
-  const confirmPayment = async () => {
-
-    if (
-      !cardNumber ||
-      !cardDate ||
-      !cardCVV
-    ) {
-      setError("Заполните данные карты.");
+    // Проверяем карту из localStorage
+    const savedCard = localStorage.getItem("card_number");
+    if (!savedCard) {
+      setError("Для оплаты нужно добавить карту в профиле.");
+      navigate("/profile");
       return;
     }
 
+    setError("");
     setStatus("creating");
 
     try {
-
       const createdOrders = [];
 
       for (const item of cart) {
-
         const order = await createOrder({
           product_id: item.id,
           size: item.size,
@@ -81,30 +67,17 @@ function Cart() {
         });
 
         createdOrders.push(order);
-
         await payOrder(order.id);
       }
 
-      const lastOrder =
-        createdOrders[
-          createdOrders.length - 1
-        ];
-
+      const lastOrder = createdOrders[createdOrders.length - 1];
       setOrderId(lastOrder?.id ?? null);
 
       clearCart();
       setCart([]);
-
-      setShowPayment(false);
-
       setStatus("success");
-
     } catch (err) {
-
-      setShowPayment(false);
-
       setStatus("failed");
-
       setError(
         err?.response?.data?.detail ||
           err?.response?.data?.error ||
@@ -115,58 +88,43 @@ function Cart() {
 
   if (status === "success") {
     return (
-      <div className="requests-page">
+      <main className="requests-page cart-page">
+        <section className="cart-success">
+          <div className="cart-success-mark">✓</div>
 
-        <div
-          className="request-detail-card"
-          style={{ textAlign: "center" }}
-        >
+          <span className="cart-eyebrow">
+            Заказ оформлен
+          </span>
 
-          <h1>🎉 Спасибо за покупку!</h1>
+          <h1>Спасибо за покупку</h1>
 
-          <p
-            style={{
-              marginTop: 20,
-              marginBottom: 20,
-            }}
-          >
-            Ваш заказ успешно оформлен
-            и оплачен.
+          <p>
+            Ваш заказ успешно оформлен и оплачен.
+            Информация о покупке доступна в разделе
+            «Мои заказы».
           </p>
 
           {orderId && (
-            <h3
-              style={{
-                color: "#4f46e5",
-              }}
-            >
+            <div className="cart-order-number">
               Заказ №{orderId}
-            </h3>
+            </div>
           )}
 
           <button
             className="primary-button"
-            style={{
-              marginTop: 25,
-            }}
-            onClick={() =>
-              navigate("/orders")
-            }
+            type="button"
+            onClick={() => navigate("/orders")}
           >
-            Мои заказы
+            Перейти к моим заказам
           </button>
-
-        </div>
-
-      </div>
+        </section>
+      </main>
     );
   }
 
   return (
-    <div className="requests-page">
-
-      <div className="requests-header">
-
+    <main className="requests-page cart-page">
+      <div className="requests-header cart-header">
         <span className="requests-tag">
           MAMYK SHOP
         </span>
@@ -174,255 +132,152 @@ function Cart() {
         <h1>Корзина</h1>
 
         <p>
-          Проверьте выбранные товары
-          перед оформлением заказа.
+          Проверьте выбранные товары перед оформлением заказа.
         </p>
-
       </div>
 
       {cart.length === 0 ? (
-        <div className="empty-box">
-          🛒 Ваша корзина пока пуста.
-        </div>
+        <section className="cart-empty">
+          <h2>Корзина пока пуста</h2>
+
+          <p>
+            Добавьте товары из каталога, чтобы оформить заказ.
+          </p>
+
+          <button
+            className="primary-button"
+            type="button"
+            onClick={() => navigate("/catalog")}
+          >
+            Перейти в каталог
+          </button>
+        </section>
       ) : (
-        <>
-          <div className="request-list">
-
-            {cart.map((item, index) => (
-
-              <div
-                key={index}
-                className="request-card"
-              >
-
-                <span className="card-tag">
-                  Товар
+        <div className="cart-layout">
+          <section className="cart-products">
+            <div className="cart-section-heading">
+              <div>
+                <span className="cart-eyebrow">
+                  Выбранные товары
                 </span>
 
-                <h2>{item.name}</h2>
-
-                <div className="request-info">
-
-                  <div className="info-item">
-                    <span className="info-title">
-                      Размер
-                    </span>
-
-                    <strong>
-                      {item.size}
-                    </strong>
-                  </div>
-
-                  <div className="info-item">
-                    <span className="info-title">
-                      Цена
-                    </span>
-
-                    <strong>
-                      {Number(
-                        item.price
-                      ).toLocaleString(
-                        "ru-RU"
-                      )}{" "}
-                      ₸
-                    </strong>
-                  </div>
-
-                </div>
-
-                <button
-                  className="primary-button"
-                  style={{
-                    width: "100%",
-                    marginTop: 18,
-                    background: "#ef4444",
-                  }}
-                  onClick={() =>
-                    deleteItem(index)
-                  }
-                >
-                  Удалить
-                </button>
-
+                <h2>
+                  Корзина
+                  <span className="cart-count">
+                    {cart.length}
+                  </span>
+                </h2>
               </div>
+            </div>
 
-            ))}
+            <div className="cart-items">
+              {cart.map((item, index) => (
+                <article
+                  key={`${item.id}-${item.size}-${index}`}
+                  className="cart-item"
+                >
+                  <div className="cart-item-main">
+                    <span className="cart-item-type">
+                      Адаптивная одежда
+                    </span>
 
-          </div>
-                    <div
-            className="request-detail-card"
-            style={{ marginTop: 35 }}
-          >
-            <h2
-              style={{
-                marginBottom: 25,
-              }}
-            >
-              Итого:
-              <span
-                style={{
-                  color: "#4f46e5",
-                }}
-              >
-                {" "}
-                {Number(totalPrice).toLocaleString(
-                  "ru-RU"
-                )}{" "}
-                ₸
+                    <h3>{item.name}</h3>
+
+                    <div className="cart-item-meta">
+                      <div>
+                        <span>Размер</span>
+                        <strong>{item.size}</strong>
+                      </div>
+
+                      <div>
+                        <span>Цена</span>
+                        <strong>
+                          {Number(item.price).toLocaleString("ru-RU")} ₸
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    className="cart-remove-button"
+                    type="button"
+                    onClick={() => deleteItem(index)}
+                  >
+                    Удалить
+                  </button>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <aside className="cart-checkout">
+            <div className="cart-checkout-heading">
+              <span className="cart-eyebrow">
+                Оформление
               </span>
-            </h2>
+
+              <h2>Ваш заказ</h2>
+            </div>
+
+            <div className="cart-summary-row">
+              <span>Товаров</span>
+              <strong>{cart.length}</strong>
+            </div>
+
+            <div className="cart-summary-row cart-total-row">
+              <span>Итого</span>
+              <strong>
+                {Number(totalPrice).toLocaleString("ru-RU")} ₸
+              </strong>
+            </div>
+
+            {/* Показываем последние 4 цифры карты если есть */}
+            {localStorage.getItem("card_number") && (
+              <div className="cart-summary-row">
+                <span>Карта</span>
+                <strong>
+                  **** {localStorage.getItem("card_number").slice(-4)}
+                </strong>
+              </div>
+            )}
 
             <form
+              className="cart-checkout-form"
               onSubmit={handleCheckout}
-              className="request-form-card"
-              style={{
-                boxShadow: "none",
-                padding: 0,
-              }}
             >
               <label>
-                Адрес доставки
-
+                <span>Адрес доставки</span>
                 <input
                   value={address}
-                  onChange={(e) =>
-                    setAddress(e.target.value)
-                  }
+                  onChange={(e) => setAddress(e.target.value)}
                   placeholder="Введите адрес доставки"
                   required
                 />
               </label>
 
+              {error && (
+                <div className="cart-error">{error}</div>
+              )}
+
               <button
                 type="submit"
-                className="primary-button"
-                style={{
-                  marginTop: 25,
-                  width: "100%",
-                }}
+                className="primary-button cart-checkout-button"
+                disabled={status === "creating"}
               >
-                💳 Оформить заказ
+                {status === "creating"
+                  ? "Оформление..."
+                  : "Оформить и оплатить"}
               </button>
-
             </form>
 
-            {status === "creating" && (
-              <p
-                style={{
-                  marginTop: 20,
-                  color: "#4f46e5",
-                  fontWeight: 600,
-                }}
-              >
-                Оформляем заказ...
-              </p>
-            )}
-
-            {status === "failed" && (
-              <p className="page-error">
-                {error}
-              </p>
-            )}
-
-          </div>
-
-          {showPayment && (
-
-            <div className="payment-overlay">
-
-              <div className="payment-modal">
-
-                <h2>
-                  💳 Оплата заказа
-                </h2>
-
-                <p>
-                  Для завершения покупки
-                  заполните данные карты
-                </p>
-
-                <input
-                  type="text"
-                  placeholder="Номер карты"
-                  value={cardNumber}
-                  onChange={(e) =>
-                    setCardNumber(e.target.value)
-                  }
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    marginTop: 15,
-                  }}
-                >
-
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    value={cardDate}
-                    onChange={(e) =>
-                      setCardDate(e.target.value)
-                    }
-                  />
-
-                  <input
-                    type="password"
-                    placeholder="CVV"
-                    value={cardCVV}
-                    onChange={(e) =>
-                      setCardCVV(e.target.value)
-                    }
-                  />
-
-                </div>
-
-                <h3
-                  style={{
-                    marginTop: 25,
-                    color: "#4f46e5",
-                  }}
-                >
-                  К оплате:
-                  {" "}
-                  {Number(totalPrice).toLocaleString("ru-RU")}
-                  {" "}
-                  ₸
-                </h3>
-
-                <div
-                  className="payment-buttons"
-                >
-
-                  <button
-                    className="cancel-btn"
-                    onClick={() =>
-                      setShowPayment(false)
-                    }
-                  >
-                    Отмена
-                  </button>
-
-                  <button
-                    className="pay-btn"
-                    onClick={confirmPayment}
-                  >
-                    Оплатить
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          )}
-
-        </>
+            <p className="cart-checkout-note">
+              После оформления вы сможете просмотреть
+              заказ в личном кабинете.
+            </p>
+          </aside>
+        </div>
       )}
-
-    </div>
+    </main>
   );
 }
 
