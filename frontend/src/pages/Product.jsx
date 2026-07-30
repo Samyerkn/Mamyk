@@ -31,6 +31,13 @@ function Product() {
   }, [id]);
 
   const handleAddToCart = () => {
+    const token = localStorage.getItem("access_token");
+    
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+  
     addToCart({
       id: product.id,
       name: product.name,
@@ -38,9 +45,9 @@ function Product() {
       image: tshirtImage,
       size: selectedSize,
     });
-
+  
     setAdded(true);
-
+  
     setTimeout(() => {
       setAdded(false);
     }, 2500);

@@ -57,11 +57,18 @@ class MedicalCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalCase
         fields = [
-            'id', 'user', 'patient_name', 'diagnosis', 'story',
-            'amount_needed', 'amount_collected', 'status', 'created_at'
+            'id',
+            'user',
+            'patient_name',
+            'diagnosis',
+            'story',
+            'image',
+            'amount_needed',
+            'amount_collected',
+            'status',
+            'created_at',
         ]
         read_only_fields = ['status', 'created_at']
-
 
 class MedicalDonationSerializer(serializers.ModelSerializer):
     sponsor = UserSerializer(read_only=True)

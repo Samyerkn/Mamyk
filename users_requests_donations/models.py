@@ -85,23 +85,44 @@ class MedicalCase(models.Model):
     PENDING = 'pending'
     IN_PROGRESS = 'in_progress'
     COMPLETED = 'completed'
+
     STATUS_CHOICES = [
         (PENDING, 'Ожидает'),
         (IN_PROGRESS, 'В процессе'),
         (COMPLETED, 'Выполнена'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='medical_cases')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='medical_cases'
+    )
     patient_name = models.CharField(max_length=150)
     diagnosis = models.CharField(max_length=200)
     story = models.TextField()
-    amount_needed = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=PENDING)
+
+    image = models.ImageField(
+        upload_to='medical/',
+        blank=True,
+        null=True
+    )
+
+    amount_needed = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default=PENDING
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def amount_collected(self):
-        result = self.medical_donations.aggregate(total=Sum('amount'))['total']
+        result = self.medical_donations.aggregate(
+            total=Sum('amount')
+        )['total']
         return result or 0
 
     def check_completion(self):
@@ -111,7 +132,6 @@ class MedicalCase(models.Model):
 
     def __str__(self):
         return f"{self.patient_name} — {self.get_status_display()}"
-
 
 class MedicalDonation(models.Model):
     sponsor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='medical_donations')

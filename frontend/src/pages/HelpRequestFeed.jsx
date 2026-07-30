@@ -16,6 +16,7 @@ function HelpRequestFeed() {
         const data = await fetchPublicHelpRequests();
         setRequests(data);
       } catch (err) {
+        console.error(err);
         setError("Не удалось загрузить список заявок.");
       } finally {
         setLoading(false);
@@ -25,214 +26,155 @@ function HelpRequestFeed() {
     loadRequests();
   }, []);
 
+  const getFasteningType = (type) => {
+    if (type === "buttons") return "На кнопках";
+    if (type === "magnets") return "На магнитах";
+    if (type === "velcro") return "На липучках";
+    return type;
+  };
+
+  const getStatus = (status) => {
+    if (status === "pending") return "Ожидает помощи";
+    if (status === "in_progress") return "Сбор открыт";
+    if (status === "completed") return "Сбор завершён";
+    return status;
+  };
+
   return (
-    <div className="requests-page">
+    <main className="requests-page">
+      <section className="requests-header">
+        <span className="requests-tag">MAMYK CARE</span>
 
-      <div className="requests-header">
-
-        <span className="requests-tag">
-          MAMYK CARE
-        </span>
-
-        <h1>
-          Помощь детям
-        </h1>
+        <h1>Помощь детям</h1>
 
         <p>
-          Каждая заявка помогает ребёнку получить адаптивную одежду,
-          которая сделает повседневную жизнь комфортнее.
+          Поддержите семьи в приобретении адаптивной одежды
+          для детей с особыми потребностями.
         </p>
 
         <button
           className="primary-button"
           onClick={() => navigate("/requests/new")}
         >
-          Подать заявку
+          Подать заявку на помощь
         </button>
-
-      </div>
+      </section>
 
       {loading && (
-        <p className="loading-text">
-          Загрузка...
-        </p>
+        <p className="loading-text">Загрузка заявок...</p>
       )}
 
       {error && (
-        <p className="page-error">
-          {error}
-        </p>
+        <p className="page-error">{error}</p>
       )}
 
-      {!loading && requests.length === 0 && (
+      {!loading && !error && requests.length === 0 && (
         <div className="empty-box">
-          Пока нет активных заявок.
+          В настоящее время активных заявок нет.
         </div>
       )}
 
-      <div className="request-list">
-
+      <section className="request-list">
         {requests.map((request) => {
+          const needed = Number(request.amount_needed) || 0;
+          const collected = Number(request.amount_collected) || 0;
 
           const percent =
-            request.amount_needed > 0
-              ? Math.min(
-                  100,
-                  (request.amount_collected /
-                    request.amount_needed) *
-                    100
-                )
+            needed > 0
+              ? Math.min(100, (collected / needed) * 100)
               : 0;
 
-          const fasteningType =
-            request.fastening_type === "buttons"
-              ? "На кнопках"
-              : request.fastening_type === "magnets"
-              ? "На магнитах"
-              : request.fastening_type === "velcro"
-              ? "На липучках"
-              : request.fastening_type;
-
-          const status =
-            request.status === "pending"
-              ? "Ожидает"
-              : request.status === "in_progress"
-              ? "В процессе"
-              : request.status === "completed"
-              ? "Завершено"
-              : request.status;
+          const remaining = Math.max(needed - collected, 0);
 
           return (
-
-            <div
+            <article
               key={request.id}
               className="request-card"
-              onClick={() =>
-                navigate(`/requests/${request.id}`)
-              }
+              onClick={() => navigate(`/requests/${request.id}`)}
             >
-
-              <span className="card-tag">
-                ❤️ Помощь ребёнку
-              </span>
-
-              <div className="request-card-header">
-
-                <div>
-
-                  <h2>
-                    {request.child_name}
-                  </h2>
-
-                  <p className="diagnosis">
-                    {request.diagnosis}
-                  </p>
-
-                </div>
+              <div className="request-card-top">
+                <span className="card-tag">
+                  Заявка на помощь
+                </span>
 
                 <span
                   className={`status-pill status-${request.status}`}
                 >
-                  {status}
+                  {getStatus(request.status)}
                 </span>
-
               </div>
 
-              <p className="request-story">
+              <div className="request-main">
+                <h2>{request.child_name}</h2>
 
-                {request.story.length > 170
-                  ? request.story.slice(0, 170) + "..."
-                  : request.story}
+                <p className="diagnosis">
+                  {request.diagnosis}
+                </p>
 
-              </p>
-
-              <div className="request-info">
-
-                <div className="info-item">
-
-                  <span className="info-title">
-                    Тип одежды
-                  </span>
-
-                  <strong>
-                    👕 {fasteningType}
-                  </strong>
-
-                </div>
-
-                <div className="info-item">
-
-                  <span className="info-title">
-                    Размер
-                  </span>
-
-                  <strong>
-                    📏 {request.size}
-                  </strong>
-
-                </div>
-
+                <p className="request-story">
+                  {request.story?.length > 135
+                    ? `${request.story.slice(0, 135)}...`
+                    : request.story}
+                </p>
               </div>
 
-              <div className="progress-row">
+              <div className="request-meta">
+                <div>
+                  <span>Тип одежды</span>
+                  <strong>
+                    {getFasteningType(request.fastening_type)}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Размер</span>
+                  <strong>{request.size}</strong>
+                </div>
+              </div>
+
+              <div className="fundraising">
+                <div className="fundraising-header">
+                  <div>
+                    <span>Собрано</span>
+                    <strong>
+                      {collected.toLocaleString("ru-RU")} ₸
+                    </strong>
+                  </div>
+
+                  <div className="fundraising-percent">
+                    {Math.round(percent)}%
+                  </div>
+                </div>
 
                 <div className="progress-bar-outer">
-
                   <div
                     className="progress-bar-inner"
-                    style={{
-                      width: `${percent}%`,
-                    }}
+                    style={{ width: `${percent}%` }}
                   />
-
                 </div>
 
-                <span>
-                  {Math.round(percent)}%
-                </span>
-
-              </div>
-
-              <div className="requests-money-box">
-
-                <div>
-
+                <div className="fundraising-footer">
                   <span>
-                    Собрано
+                    Цель: {needed.toLocaleString("ru-RU")} ₸
                   </span>
 
-                  <strong>
-                    {Number(
-                      request.amount_collected
-                    ).toLocaleString("ru-RU")} ₸
-                  </strong>
-
+                  {remaining > 0 && (
+                    <span>
+                      Осталось: {remaining.toLocaleString("ru-RU")} ₸
+                    </span>
+                  )}
                 </div>
-
-                <div>
-
-                  <span>
-                    Необходимо
-                  </span>
-
-                  <strong>
-                    {Number(
-                      request.amount_needed
-                    ).toLocaleString("ru-RU")} ₸
-                  </strong>
-
-                </div>
-
               </div>
 
-            </div>
-
+              <div className="request-card-footer">
+                <span>Подробнее</span>
+                <span aria-hidden="true">→</span>
+              </div>
+            </article>
           );
         })}
-
-      </div>
-
-    </div>
+      </section>
+    </main>
   );
 }
 
