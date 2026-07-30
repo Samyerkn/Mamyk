@@ -1,0 +1,542 @@
+.requests-page{
+    max-width:1200px;
+    margin:50px auto;
+    padding:20px;
+}
+
+/* ==========================
+   Шапка
+========================== */
+
+.requests-header{
+    text-align:center;
+    margin-bottom:55px;
+}
+
+.requests-tag{
+    display:inline-block;
+    padding:8px 22px;
+    background:#ede9fe;
+    color:#7c3aed;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom:18px;
+}
+
+.requests-header h1{
+    font-size:48px;
+    font-weight:800;
+    color:#2d3748;
+    margin-bottom:14px;
+}
+
+.requests-header p{
+    max-width:720px;
+    margin:auto;
+    margin-bottom:32px;
+    color:#6b7280;
+    line-height:1.8;
+    font-size:18px;
+}
+
+.primary-button{
+    background:#6366f1;
+    color:white;
+    border:none;
+    padding:15px 34px;
+    border-radius:14px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.primary-button:hover{
+    background:#4f46e5;
+    transform:translateY(-3px);
+}
+
+/* ==========================
+   Карточки
+========================== */
+
+.request-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:28px;
+}
+
+.request-card{
+    background:#fff;
+    border-radius:24px;
+    padding:28px;
+    cursor:pointer;
+    transition:.35s;
+    border:1px solid #ece8ff;
+    box-shadow:0 10px 30px rgba(99,102,241,.10);
+}
+
+.request-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 45px rgba(99,102,241,.18);
+}
+
+/* ==========================
+   Верх карточки
+========================== */
+
+.card-tag{
+    display:inline-block;
+    background:#f3e8ff;
+    color:#7c3aed;
+    padding:8px 18px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.request-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.request-card-header h2{
+    font-size:28px;
+    color:#312e81;
+    margin-bottom:8px;
+}
+
+.diagnosis{
+    color:#7c3aed;
+    font-size:17px;
+    font-weight:600;
+}
+
+/* ==========================
+   Статусы
+========================== */
+
+.status-pill{
+    padding:8px 18px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.status-pending{
+    background:#FEF3C7;
+    color:#92400E;
+}
+
+.status-in_progress{
+    background:#DBEAFE;
+    color:#1D4ED8;
+}
+
+.status-completed{
+    background:#DCFCE7;
+    color:#166534;
+}
+
+/* ==========================
+   История
+========================== */
+
+.request-story{
+    margin:24px 0;
+    color:#4b5563;
+    line-height:1.8;
+    font-size:16px;
+}
+
+/* ==========================
+   Тип одежды и размер
+========================== */
+
+.request-info{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    margin-bottom:28px;
+}
+
+.info-item{
+    background:#faf8ff;
+    border:1px solid #e9d5ff;
+    border-radius:18px;
+    padding:18px;
+    transition:.3s;
+}
+
+.info-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(99,102,241,.12);
+}
+
+.info-title{
+    display:block;
+    color:#8b5cf6;
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:10px;
+}
+
+.info-item strong{
+    display:block;
+    font-size:19px;
+    color:#312e81;
+    font-weight:700;
+}
+
+/* ==========================
+   Прогресс
+========================== */
+
+.progress-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:26px;
+}
+
+.progress-row span{
+    font-weight:700;
+    color:#4f46e5;
+    min-width:45px;
+    text-align:right;
+}
+
+.progress-bar-outer{
+    flex:1;
+    height:12px;
+    background:#ede9fe;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar-inner{
+    height:100%;
+    background:linear-gradient(90deg,#8b5cf6,#6366f1);
+    border-radius:20px;
+}
+
+/* ==========================
+   Деньги
+========================== */
+
+.requests-money-box{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.requests-money-box div{
+    background:#faf8ff;
+    border:1px solid #ede9fe;
+    border-radius:16px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.requests-money-box span{
+    display:block;
+    color:#8b5cf6;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.requests-money-box strong{
+    display:block;
+    color:#312e81;
+    font-size:24px;
+    font-weight:800;
+}
+
+/* ==========================
+   Формы
+========================== */
+
+.request-detail-card,
+.request-form-card,
+.donation-form-card,
+.donation-history-card{
+    background:white;
+    border-radius:22px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(99,102,241,.10);
+}
+
+.request-form-card label,
+.donation-form-card label{
+    display:block;
+    margin-bottom:15px;
+    color:#4338ca;
+    font-weight:700;
+}
+
+.request-form-card input,
+.request-form-card textarea,
+.request-form-card select,
+.donation-form-card input{
+    width:100%;
+    margin-top:8px;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid #ddd6fe;
+    font-size:16px;
+    transition:.3s;
+}
+
+.request-form-card textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.request-form-card input:focus,
+.request-form-card textarea:focus,
+.request-form-card select:focus,
+.donation-form-card input:focus{
+    outline:none;
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 4px rgba(139,92,246,.15);
+}
+
+.field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+/* ==========================
+   История пожертвований
+========================== */
+
+.donation-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid #ede9fe;
+}
+
+.donation-row:last-child{
+    border-bottom:none;
+}
+
+.pill{
+    background:#ede9fe;
+    color:#7c3aed;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* ==========================
+   Сообщения
+========================== */
+
+.loading-text,
+.empty-box{
+    text-align:center;
+    padding:45px;
+    color:#6b7280;
+    font-size:18px;
+}
+
+.page-error{
+    color:#dc2626;
+    text-align:center;
+    font-weight:700;
+    margin:20px 0;
+}
+
+/* ==========================
+   Адаптивность
+========================== */
+
+@media(max-width:900px){
+
+.request-list{
+    grid-template-columns:1fr;
+}
+
+.request-card-header{
+    flex-direction:column;
+}
+
+.request-info{
+    grid-template-columns:1fr;
+}
+
+.requests-money-box{
+    flex-direction:column;
+    align-items:stretch;
+}
+
+.requests-money-box div{
+    width:100%;
+}
+
+.field-row{
+    grid-template-columns:1fr;
+}
+
+.requests-header h1{
+    font-size:36px;
+}
+
+.requests-header p{
+    font-size:16px;
+}
+
+}
+
+.donation-total{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    
+}
+
+.donation-summary-card > span{
+    display:block;
+    color:#312e81;
+    font-size:22px;      /* было 16px */
+    font-weight:800;     /* было 700 */
+    margin-bottom:16px;
+    letter-spacing:0.3px;
+}
+
+.donation-total strong{
+    font-size:26px;
+    color:#312e81;
+    font-weight:800;
+}
+
+
+.donation-total .currency{
+    font-size:26px;
+    color:#312e81;
+    font-weight:800;
+}
+
+
+@media(max-width:700px){
+
+    .donation-total strong{
+        font-size:28px;
+    }
+
+    .donation-total .currency{
+        font-size:24px;
+    }
+
+}
+/* ==========================
+   Оплата
+========================== */
+
+.payment-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.payment-modal{
+    width:430px;
+    background:#fff;
+    border-radius:24px;
+    padding:35px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    animation:fadeIn .25s;
+}
+
+.payment-modal h2{
+    text-align:center;
+    color:#4f46e5;
+    margin-bottom:10px;
+}
+
+.payment-modal p{
+    text-align:center;
+    color:#6b7280;
+    margin-bottom:25px;
+}
+
+.payment-modal input{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #ddd6fe;
+    border-radius:12px;
+    font-size:15px;
+}
+
+.payment-modal input:focus{
+    outline:none;
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 4px rgba(139,92,246,.15);
+}
+
+.payment-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+}
+
+.payment-buttons button{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.cancel-btn{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.cancel-btn:hover{
+    background:#d1d5db;
+}
+
+.pay-btn{
+    background:#4f46e5;
+    color:white;
+}
+
+.pay-btn:hover{
+    background:#4338ca;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
